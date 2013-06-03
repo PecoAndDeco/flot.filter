@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <title>Flot Filter Examples: Simple</title>
+            <link href="examples.css" rel="stylesheet" type="text/css">
+                <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+				<script type="text/javascript" src="../js/jquery-1.10.1.min.js" ></script>
+                <script type="text/javascript" src="../js/jquery.flot.js"></script>
+                <script type="text/javascript" src="../jquery.flot.filter.js"></script>
+                <script type="text/javascript" src="../js/jquery.flot.navigate.js"></script>
+				<script>
+				$(function() {
+					var count = 100000;
+
+					var data = [];
+					for (var i = 0; i < count; i += 1) {
+						data.push([i, 5*Math.cos(25*i/count) + Math.random() - 0.5]);
+					}
+
+					$.plot("#placeholder",
+					[ data ],
+					{
+						zoom: { interactive: true },
+						pan: { interactive: true },
+						yaxis: { zoomRange: [ -6, 6], panRange: [ -6, 6] },
+						filter: 'average'
+					});
+				})
+				</script>
+    </head>
+    <body>
+        <div id="content">
+            <div class="demo-container">
+                <div id="placeholder" class="demo-placeholder"></div>
+            </div>
+        </div>
+    </body>
+</html>
