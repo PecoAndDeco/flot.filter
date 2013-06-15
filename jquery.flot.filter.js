@@ -47,17 +47,19 @@
 				visiblePoints = filteredPoints;
 			}
 
-			series.datapoints.points = getFlattenedPoints(visiblePoints);
+			series.datapoints.points = getFlattenedPoints(visiblePoints, series.datapoints.pointsize);
 		}
 
-		function getVisiblePoints(xAxis, points) {
-			if (xAxis.max < points[0][0] || xAxis.min > points[points.length-1][0])
-				return [];
+		function getFlattenedPoints(points, pointsize) {
+			var flattenedPoints = [];
 
-			var minIndex = getClosestValue(points, xAxis.min, 'lower');
-			var maxIndex = getClosestValue(points, xAxis.max, 'upper');
+			for (var i=0;i<points.length;i++) {
+				for (var j=0;j<pointsize+1;j++) {
+					flattenedPoints.push(points[i][j]);
+				}
+			}
 
-			return points.slice(minIndex, maxIndex+1);
+			return flattenedPoints;
 		}
 
 		function getClosestValue(points, value, roundingType) {
