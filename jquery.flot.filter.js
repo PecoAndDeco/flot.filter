@@ -51,33 +51,48 @@
 		}
 
 		function getVisiblePoints(xAxis, points) {
+			if (xAxis.max < points[0][0] || xAxis.min > points[points.length-1][0])
+				return [];
+
 			var minIndex = getClosestValue(points, xAxis.min, 'lower');
 			var maxIndex = getClosestValue(points, xAxis.max, 'upper');
 
 			return points.slice(minIndex, maxIndex+1);
 		}
 
-		function getClosestValue(a, x, roundingType) {
-			var lo = 0, hi = a.length-1;
+		function getClosestValue(points, value, roundingType) {
+			var lo = 0, hi = points.length-1;
+
+			if (value < points[lo][0])
+				return 0;
+
+			if (value > points[hi][0])
+				return points.length-1;
+
 			while (hi - lo > 1) {
 				var mid = Math.round((lo + hi)/2);
-				if (a[mid][0] <= x) {
+				if (points[mid][0] <= value)
 					lo = mid;
-				} else {
+				else
 					hi = mid;
-				}
 			}
-			if (a[lo][0] == x) hi = lo;
-			if (roundingType == 'lower'){
-				return a[lo][0];
-			}
-			else {
-				return a[hi][0];
-			}
+
+			if (points[lo][0] == value)
+				return lo;
+
+			if (points[hi][0] == value)
+				return hi;
+
+			if (roundingType == 'lower')
+				return lo;
+
+			if (roundingType == 'upper')
+				return hi;
 		}
 
 		function getFlattenedPoints(points) {
 			var flattenedPoints = [];
+
 			for (var i=0;i<points.length;i++) {
 				flattenedPoints.push(points[i][0]);
 				flattenedPoints.push(points[i][1]);
