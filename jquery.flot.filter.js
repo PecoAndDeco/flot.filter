@@ -50,16 +50,14 @@
 			series.datapoints.points = getFlattenedPoints(visiblePoints, series.datapoints.pointsize);
 		}
 
-		function getFlattenedPoints(points, pointsize) {
-			var flattenedPoints = [];
+		function getVisiblePoints(xAxis, points) {
+			if (xAxis.max < points[0][0] || xAxis.min > points[points.length-1][0])
+				return [];
 
-			for (var i=0;i<points.length;i++) {
-				for (var j=0;j<pointsize+1;j++) {
-					flattenedPoints.push(points[i][j]);
-				}
-			}
+			var minIndex = getClosestValue(points, xAxis.min, 'lower');
+			var maxIndex = getClosestValue(points, xAxis.max, 'upper');
 
-			return flattenedPoints;
+			return points.slice(minIndex, maxIndex+1);
 		}
 
 		function getClosestValue(points, value, roundingType) {
@@ -92,12 +90,13 @@
 				return hi;
 		}
 
-		function getFlattenedPoints(points) {
+		function getFlattenedPoints(points, pointsize) {
 			var flattenedPoints = [];
 
 			for (var i=0;i<points.length;i++) {
-				flattenedPoints.push(points[i][0]);
-				flattenedPoints.push(points[i][1]);
+				for (var j=0;j<pointsize+1;j++) {
+					flattenedPoints.push(points[i][j]);
+				}
 			}
 
 			return flattenedPoints;
